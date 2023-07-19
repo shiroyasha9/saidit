@@ -25,7 +25,6 @@ const UserAuthForm: FC<UserAuthFormProps> = props => {
         description: "There was an error logging in with Google.",
         variant: "destructive",
       });
-      console.log(error);
     } finally {
       setIsLoading(false);
     }
