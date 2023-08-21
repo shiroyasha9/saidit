@@ -49,7 +49,7 @@ const Editor = ({ subredditId }: EditorProps) => {
     if (!ref.current) {
       const editor = new EditorJS({
         holder: "editor",
-        onReady: () => {
+        onReady() {
           ref.current = editor;
         },
         placeholder: "Type here to write your post...",
@@ -152,12 +152,14 @@ const Editor = ({ subredditId }: EditorProps) => {
   });
 
   async function onSubmit(data: PostCreationRequest) {
-    const blocks = ref.current?.save();
+    const blocks = await ref.current?.save();
     const payload: PostCreationRequest = {
       title: data.title,
       content: blocks,
       subredditId,
     };
+
+    console.log(payload);
 
     createPost(payload);
   }
