@@ -30,15 +30,15 @@ const Layout = async ({
   const subscription = !session?.user
     ? undefined
     : await db.subscription.findFirst({
-      where: {
-        user: {
-          id: session.user.id,
+        where: {
+          user: {
+            id: session.user.id,
+          },
+          subreddit: {
+            name: params.slug,
+          },
         },
-        subreddit: {
-          name: params.slug,
-        },
-      },
-    });
+      });
 
   const isSubscribed = !!subscription;
 
@@ -90,15 +90,17 @@ const Layout = async ({
                   isSubscribed={isSubscribed}
                 />
               ) : null}
-              <Link
-                className={buttonVariants({
-                  variant: "outline",
-                  className: "mb-6 w-full",
-                })}
-                href={`/r/${params.slug}/submit`}
-              >
-                Create Post
-              </Link>
+              {isSubscribed && (
+                <Link
+                  className={buttonVariants({
+                    variant: "outline",
+                    className: "mb-6 w-full",
+                  })}
+                  href={`/r/${params.slug}/submit`}
+                >
+                  Create Post
+                </Link>
+              )}
             </dl>
           </div>
         </div>
