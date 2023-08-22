@@ -68,7 +68,7 @@ export async function PATCH(req: Request) {
         return acc - 1;
       }, 0);
 
-      if (votesAmount > CACHE_AFTER_UPVOTES) {
+      if (votesAmount >= CACHE_AFTER_UPVOTES) {
         const cachePayload: CachedPost = {
           id: post.id,
           title: post.title,
@@ -97,7 +97,7 @@ export async function PATCH(req: Request) {
       return acc - 1;
     }, 0);
 
-    if (votesAmount > CACHE_AFTER_UPVOTES) {
+    if (votesAmount >= CACHE_AFTER_UPVOTES) {
       const cachePayload: CachedPost = {
         id: post.id,
         title: post.title,
