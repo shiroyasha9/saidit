@@ -1,9 +1,20 @@
 "use client";
 import { formatTimeToNow } from "@/lib/utils";
 import { Comment, CommentVote, User } from "@prisma/client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import CommentVotes from "./CommentVotes";
 import UserAvatar from "./UserAvatar";
+import { Button } from "./ui/Button";
+import { MessageSquare } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Label } from "./ui/Label";
+import { Textarea } from "./ui/Textarea";
+import { useMutation } from "@tanstack/react-query";
+import { CommentRequest } from "@/lib/validators/comment";
+import axios, { AxiosError } from "axios";
+import useCustomToast from "@/hooks/use-custom-toast";
+import { toast } from "@/hooks/use-toast";
 
 type ExtendedComment = Comment & {
   votes: CommentVote[];
@@ -12,9 +23,51 @@ type ExtendedComment = Comment & {
 
 type PostCommentProps = {
   comment: ExtendedComment;
+  votesAmount: number;
+  postId: string;
+  currentVote: CommentVote | undefined;
 };
-const PostComment = ({ comment }: PostCommentProps) => {
+const PostComment = ({
+  comment,
+  votesAmount,
+  postId,
+  currentVote,
+}: PostCommentProps) => {
   const commentRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const [isReplying, setIsReplying] = useState(false);
+  const [input, setInput] = useState("");
+
+  const { data: session } = useSession();
+  const { loginToast } = useCustomToast();
+
+  const { mutate: postComment, isLoading } = useMutation({
+    mutationFn: async (payload: CommentRequest) => {
+      const { data } = await axios.patch(
+        `/api/subreddit/post/comment`,
+        payload,
+      );
+      return data;
+    },
+
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      toast({
+        title: "There was an error",
+        description: "Something went wrong. Please try again",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      router.refresh();
+      setInput("");
+    },
+  });
+
   return (
     <div ref={commentRef} className="flex flex-col">
       <div className="flex items-center">
@@ -37,8 +90,62 @@ const PostComment = ({ comment }: PostCommentProps) => {
       </div>
       <p className="text-sm text-gray-900 mt-2">{comment.text}</p>
 
-      <div className="flex gap-2 items-center">
-        <CommentVotes />
+      <div className="flex gap-2 items-center flex-wrap">
+        <CommentVotes
+          commentId={comment.id}
+          initialVotesAmount={votesAmount}
+          initialVote={currentVote}
+        />
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() => {
+            if (!session) {
+              return router.push("/sign-in");
+            }
+            setIsReplying(true);
+          }}
+        >
+          <MessageSquare className="h-4 w-4 mr-1.5" />
+          Reply
+        </Button>
+        {isReplying && (
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="comment">Your comment</Label>
+            <div className="mt-2">
+              <Textarea
+                id="comment"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                rows={1}
+                placeholder="What are your thoughts?"
+              />
+              <div className="mt-2 flex justify-end gap-2">
+                <Button
+                  tabIndex={-1}
+                  variant="subtle"
+                  onClick={() => setIsReplying(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (!input) return;
+                    postComment({
+                      postId,
+                      text: input,
+                      replyToId: comment.replyToId ?? comment.id,
+                    });
+                  }}
+                  isLoading={isLoading}
+                  disabled={input.length === 0}
+                >
+                  Post
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

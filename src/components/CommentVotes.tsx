@@ -4,17 +4,19 @@ import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { CommentVoteRequest } from "@/lib/validators/vote";
 import { usePrevious } from "@mantine/hooks";
-import { VoteType } from "@prisma/client";
+import { CommentVote, VoteType } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/Button";
 
+type PartialVote = Pick<CommentVote, "type">;
+
 type CommentVoteProps = {
   commentId: string;
   initialVotesAmount: number;
-  initialVote?: VoteType | null;
+  initialVote?: PartialVote;
 };
 
 const CommentVote = ({
@@ -55,8 +57,8 @@ const CommentVote = ({
         variant: "destructive",
       });
     },
-    onMutate: (type: VoteType) => {
-      if (currentVote === type) {
+    onMutate: (type) => {
+      if (currentVote?.type === type) {
         setCurrentVote(undefined);
         if (type === "UP") {
           setVotesAmount((prev) => prev - 1);
@@ -64,7 +66,7 @@ const CommentVote = ({
           setVotesAmount((prev) => prev + 1);
         }
       } else {
-        setCurrentVote(type);
+        setCurrentVote({ type });
         if (type === "UP") {
           setVotesAmount((prev) => prev + (currentVote ? 2 : 1));
         } else if (type === "DOWN") {
@@ -84,7 +86,7 @@ const CommentVote = ({
       >
         <ArrowBigUp
           className={cn("h-5 w-5 text-zinc-700", {
-            "text-emerald-500 fill-emerald-500": currentVote === "UP",
+            "text-emerald-500 fill-emerald-500": currentVote?.type === "UP",
           })}
         />
       </Button>
@@ -99,7 +101,7 @@ const CommentVote = ({
       >
         <ArrowBigDown
           className={cn("h-5 w-5 text-zinc-700", {
-            "text-red-500 fill-red-500": currentVote === "DOWN",
+            "text-red-500 fill-red-500": currentVote?.type === "DOWN",
           })}
         />
       </Button>
