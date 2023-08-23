@@ -54,6 +54,31 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
                     votesAmount={topLevelCommentVotesAmount}
                   />
                 </div>
+                {topLevelComment.replies
+                  .sort((a, b) => b.votes.length - a.votes.length)
+                  .map((reply) => {
+                    const replyVotesAmount = reply.votes.reduce(
+                      (acc, vote) => acc + (vote.type === "UP" ? 1 : -1),
+                      0,
+                    );
+
+                    const replyVote = reply.votes.find(
+                      (vote) => vote.userId === session?.user.id,
+                    );
+                    return (
+                      <div
+                        key={reply.id}
+                        className="ml-2 py-2 pl-4 border-l-2 border-zinc-200"
+                      >
+                        <PostComment
+                          comment={reply}
+                          currentVote={replyVote}
+                          votesAmount={replyVotesAmount}
+                          postId={postId}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             );
           })}
