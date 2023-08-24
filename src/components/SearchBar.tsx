@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import debounce from "lodash.debounce";
 import { Users } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Command,
   CommandEmpty,
@@ -50,6 +50,12 @@ const SearchBar = () => {
   useOnClickOutside(commandRef, () => {
     setInput("");
   });
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setInput("");
+  }, [pathname]);
 
   return (
     <Command
