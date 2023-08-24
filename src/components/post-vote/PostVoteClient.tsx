@@ -1,15 +1,16 @@
 "use client";
+
 import useCustomToast from "@/hooks/use-custom-toast";
+import { cn } from "@/lib/utils";
+import { PostVoteRequest } from "@/lib/validators/vote";
 import { usePrevious } from "@mantine/hooks";
 import { VoteType } from "@prisma/client";
-import React, { useEffect, useState } from "react";
-import { Button } from "../ui/Button";
-import { ArrowBigDown, ArrowBigUp } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import { PostVoteRequest } from "@/lib/validators/vote";
 import axios, { AxiosError } from "axios";
-import { toast } from "@/hooks/use-toast";
+import { ArrowBigDown, ArrowBigUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "../../hooks/use-toast";
+import { Button } from "../ui/Button";
 
 type PostVoteClientProps = {
   postId: string;
@@ -98,6 +99,9 @@ const PostVoteClient = ({
       <Button
         onClick={() => vote("DOWN")}
         size="sm"
+        className={cn({
+          "text-emerald-500": currentVote === "DOWN",
+        })}
         variant="ghost"
         aria-label="downvote"
       >

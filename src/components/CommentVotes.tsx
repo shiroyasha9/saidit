@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/Button";
 import useCustomToast from "@/hooks/use-custom-toast";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -9,21 +10,19 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { useState } from "react";
-import { Button } from "./ui/Button";
-
 type PartialVote = Pick<CommentVote, "type">;
 
-type CommentVoteProps = {
+type CommentVotesProps = {
   commentId: string;
   initialVotesAmount: number;
   initialVote?: PartialVote;
 };
 
-const CommentVote = ({
+const CommentVotes = ({
   commentId,
   initialVotesAmount,
   initialVote,
-}: CommentVoteProps) => {
+}: CommentVotesProps) => {
   const { loginToast } = useCustomToast();
   const [votesAmount, setVotesAmount] = useState(initialVotesAmount);
   const [currentVote, setCurrentVote] = useState(initialVote);
@@ -80,7 +79,7 @@ const CommentVote = ({
     <div className="flex gap-1">
       <Button
         onClick={() => vote("UP")}
-        size="sm"
+        size="xs"
         variant="ghost"
         aria-label="upvote"
       >
@@ -90,12 +89,15 @@ const CommentVote = ({
           })}
         />
       </Button>
-      <p className="py-2 text-center text-sm font-medium text-zinc-900">
+      <p className="px-1 py-2 text-center text-xs font-medium text-zinc-900">
         {votesAmount}
       </p>
       <Button
         onClick={() => vote("DOWN")}
-        size="sm"
+        size="xs"
+        className={cn({
+          "text-emerald-500": currentVote?.type === "DOWN",
+        })}
         variant="ghost"
         aria-label="downvote"
       >
@@ -109,4 +111,4 @@ const CommentVote = ({
   );
 };
 
-export default CommentVote;
+export default CommentVotes;

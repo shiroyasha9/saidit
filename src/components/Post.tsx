@@ -1,7 +1,9 @@
+"use client";
+
 import { formatTimeToNow } from "@/lib/utils";
 import { Post, User, Vote } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
-import React, { useRef } from "react";
+import { FC, useRef } from "react";
 import EditorOutput from "./EditorOutput";
 import PostVoteClient from "./post-vote/PostVoteClient";
 
@@ -18,14 +20,15 @@ type PostProps = {
   currentVote?: PartialVote;
 };
 
-const Post = ({
+const Post: FC<PostProps> = ({
   subredditName,
   post,
   commentAmount,
   votesAmount,
   currentVote,
-}: PostProps) => {
-  const postRef = useRef<HTMLDivElement>(null);
+}) => {
+  const postRef = useRef<HTMLParagraphElement>(null);
+
   return (
     <div className="rounded-md bg-white shadow">
       <div className="flex justify-between px-6 py-4">
@@ -44,7 +47,7 @@ const Post = ({
                 >
                   r/{subredditName}
                 </a>
-                <span className="px-1">&#x2022;</span>
+                <span className="px-1">•</span>
               </>
             ) : null}
             <span>Posted by u/{post.author.username}</span>{" "}
@@ -69,7 +72,7 @@ const Post = ({
       <div className="z-20 bg-gray-50 p-4 text-sm sm:px-6">
         <a
           className="flex w-fit items-center gap-2"
-          href={`/r/${subredditName}/${post.id}`}
+          href={`/r/${subredditName}/page/${post.id}`}
         >
           <MessageSquare className="h-4 w-4" /> {commentAmount} comments
         </a>

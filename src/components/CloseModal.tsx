@@ -11,10 +11,9 @@ const CloseModal: FC = () => {
     <Button
       variant="subtle"
       className="h-6 w-6 rounded-md p-0"
-      aria-label="close modal"
       onClick={router.back}
     >
-      <X className="h-4 w-4" />
+      <X aria-label="close modal" className="h-4 w-4" />
     </Button>
   );
 };
