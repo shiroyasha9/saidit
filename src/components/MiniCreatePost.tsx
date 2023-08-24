@@ -1,18 +1,23 @@
 "use client";
-import { Session } from "next-auth";
-import { usePathname, useRouter } from "next/navigation";
-import React from "react";
-import UserAvatar from "./UserAvatar";
-import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
-import { ImageIcon, Link2 } from "lucide-react";
 
-const MiniCreatePost = ({ session }: { session: Session | null }) => {
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Image as ImageIcon, Link2 } from "lucide-react";
+import type { Session } from "next-auth";
+import { usePathname, useRouter } from "next/navigation";
+import { FC } from "react";
+import { UserAvatar } from "./UserAvatar";
+
+type MiniCreatePostProps = {
+  session: Session | null;
+};
+
+const MiniCreatePost: FC<MiniCreatePostProps> = ({ session }) => {
   const router = useRouter();
   const pathname = usePathname();
 
   return (
-    <li className="list-none overflow-hidden rounded-md bg-white shadow">
+    <li className="overflow-hidden rounded-md bg-white shadow">
       <div className="flex h-full justify-between gap-6 px-6 py-4">
         <div className="relative">
           <UserAvatar

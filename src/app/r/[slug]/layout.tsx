@@ -6,12 +6,13 @@ import { db } from "@/lib/db";
 import { format } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ReactNode } from "react";
 
 const Layout = async ({
   children,
   params,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   params: { slug: string };
 }) => {
   const session = await getAuthSession();
@@ -60,7 +61,7 @@ const Layout = async ({
       <ToFeedButton />
       <div>
         <div className="grid grid-cols-1 gap-y-4 py-6 md:grid-cols-3 md:gap-x-4">
-          <div className="col-span-2 flex flex-col space-y-6">{children}</div>
+          <ul className="col-span-2 flex flex-col space-y-6">{children}</ul>
           <div className="order-first h-fit overflow-hidden rounded-lg border border-gray-200 md:order-last">
             <div className="px-6 py-4">
               <p className="py-3 font-semibold">About r/{subreddit.name}</p>
@@ -76,13 +77,13 @@ const Layout = async ({
               </div>
               <div className="flex justify-between gap-x-4 py-3">
                 <dt className="text-gray-500">Members</dt>
-                <dd className="text-gray-700">
+                <dd className="flex items-start gap-x-2">
                   <div className="text-gray-900">{memberCount}</div>
                 </dd>
               </div>
               {subreddit.creatorId === session?.user?.id ? (
                 <div className="flex justify-between gap-x-4 py-3">
-                  <p className="text-gray-500">You created this community</p>
+                  <dt className="text-gray-500">You created this community</dt>
                 </div>
               ) : null}
               {subreddit.creatorId !== session?.user?.id ? (
