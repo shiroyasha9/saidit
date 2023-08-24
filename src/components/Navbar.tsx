@@ -3,6 +3,7 @@ import { Bot } from "lucide-react";
 import Link from "next/link";
 import UserAccountNav from "./UserAccountNav";
 import { buttonVariants } from "./ui/Button";
+import SearchBar from "./SearchBar";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -16,6 +17,7 @@ const Navbar = async () => {
             Saidit
           </p>
         </Link>
+        <SearchBar />
         {session?.user ? (
           <UserAccountNav
             user={{
