@@ -2,8 +2,9 @@ import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/Toaster";
 import { cn } from "@/lib/utils";
-import "@/styles/globals.css";
 import { Inter } from "next/font/google";
+
+import "@/styles/globals.css";
 
 export const metadata = {
   title: "Saidit",
@@ -29,8 +30,8 @@ export default function RootLayout({
         inter.className,
       )}
     >
-      <Providers>
-        <body className="min-h-screen bg-slate-50 pt-12 antialiased">
+      <body className="min-h-screen bg-slate-50 pt-12 antialiased">
+        <Providers>
           {/* @ts-expect-error server component */}
           <Navbar />
 
@@ -39,8 +40,9 @@ export default function RootLayout({
             {children}
             <Toaster />
           </div>
-        </body>
-      </Providers>
+        </Providers>
+        <Toaster />
+      </body>
     </html>
   );
 }
