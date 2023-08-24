@@ -72,7 +72,7 @@ const Post: FC<PostProps> = ({
       <div className="z-20 bg-gray-50 p-4 text-sm sm:px-6">
         <a
           className="flex w-fit items-center gap-2"
-          href={`/r/${subredditName}/page/${post.id}`}
+          href={`/r/${subredditName}/post/${post.id}`}
         >
           <MessageSquare className="h-4 w-4" /> {commentAmount} comments
         </a>
