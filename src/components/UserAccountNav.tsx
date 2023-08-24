@@ -1,30 +1,31 @@
 "use client";
+
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { FC } from "react";
-import UserAvatar from "./UserAvatar";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/DropdownMenu";
+} from "@/components/ui/DropdownMenu";
+import { UserAvatar } from "@/components/UserAvatar";
 
-interface UserAccountNavProps {
+interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "email" | "image">;
 }
 
-const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
+export function UserAccountNav({ user }: UserAccountNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <UserAvatar
           className="h-8 w-8"
           user={{
-            name: user.name,
-            image: user.image,
+            name: user.name || null,
+            image: user.image || null,
           }}
         />
       </DropdownMenuTrigger>
@@ -33,7 +34,7 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
           <div className="flex flex-col space-y-1 leading-none">
             {user.name && <p className="font-medium">{user.name}</p>}
             {user.email && (
-              <p className="w-[200px] truncate text-sm text-zinc-700">
+              <p className="w-[200px] truncate text-sm text-muted-foreground">
                 {user.email}
               </p>
             )}
@@ -51,19 +52,17 @@ const UserAccountNav: FC<UserAccountNavProps> = ({ user }) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          className="cursor-pointer"
           onSelect={(event) => {
             event.preventDefault();
             signOut({
               callbackUrl: `${window.location.origin}/sign-in`,
             });
           }}
-          className="cursor-pointer"
         >
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
-
-export default UserAccountNav;
+}
