@@ -1,4 +1,5 @@
 "use client";
+import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { Prisma, Subreddit } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -14,7 +15,6 @@ import {
   CommandItem,
   CommandList,
 } from "./ui/Command";
-import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 
 type SearchBarProps = {};
 
@@ -22,11 +22,26 @@ const SearchBar = () => {
   const [input, setInput] = useState("");
   const router = useRouter();
   const commandRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  useOnClickOutside(commandRef, () => {
+    setInput("");
+  });
+
+  const request = debounce(async () => {
+    refetch();
+  }, 300);
+
+  const debounceRequest = useCallback(() => {
+    request();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     data: queryResults,
     refetch,
     isFetched,
-    isFetching,
   } = useQuery({
     queryKey: ["search-query"],
     queryFn: async () => {
@@ -38,20 +53,6 @@ const SearchBar = () => {
     },
     enabled: false,
   });
-
-  const request = debounce(() => {
-    refetch();
-  }, 300);
-
-  const debounceRequest = useCallback(() => {
-    request();
-  }, []);
-
-  useOnClickOutside(commandRef, () => {
-    setInput("");
-  });
-
-  const pathname = usePathname();
 
   useEffect(() => {
     setInput("");
