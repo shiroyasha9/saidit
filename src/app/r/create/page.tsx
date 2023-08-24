@@ -1,13 +1,14 @@
 "use client";
+
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import useCustomToast from "@/hooks/use-custom-toast";
+import { toast } from "@/hooks/use-toast";
+import { CreateSubredditPayload } from "@/lib/validators/subreddit";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { CreateSubredditPayload } from "@/lib/validators/subreddit";
-import { toast } from "@/hooks/use-toast";
-import useCustomToast from "@/hooks/use-custom-toast";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Page = () => {
   const [input, setInput] = useState("");
@@ -58,7 +59,9 @@ const Page = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">Create a community</h1>
         </div>
-        <hr className="h-px bg-zinc-500" />
+
+        <hr className="h-px bg-red-500" />
+
         <div>
           <p className="text-lg font-medium">Name</p>
           <p className="pb-2 text-xs">
@@ -78,7 +81,11 @@ const Page = () => {
           </div>
         </div>
         <div className="flex justify-end gap-4">
-          <Button variant="subtle" onClick={() => router.back()}>
+          <Button
+            disabled={isLoading}
+            variant="subtle"
+            onClick={() => router.back()}
+          >
             Cancel
           </Button>
           <Button
