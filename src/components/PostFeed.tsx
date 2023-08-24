@@ -47,7 +47,7 @@ const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
 
   return (
-    <ul className="flex flex-col col-span-2 space-y-6">
+    <ul className="col-span-2 flex flex-col space-y-6">
       {posts.map((post, index) => {
         const votesAmount = post.votes.reduce((acc, vote) => {
           return acc + (vote.type === "UP" ? 1 : -1);
@@ -86,7 +86,7 @@ const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
       })}
       {isFetchingNextPage && (
         <li className="flex justify-center">
-          <Loader2 className="w-6 h-6 text-zinc-500 animate-spin" />
+          <Loader2 className="h-6 w-6 animate-spin text-zinc-500" />
         </li>
       )}
     </ul>

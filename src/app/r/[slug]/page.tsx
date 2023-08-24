@@ -38,7 +38,7 @@ const SubredditPage = async ({ params }: PageProps) => {
 
   return (
     <>
-      <h1 className="font-bold text-3xl md:text-4xl h-14">
+      <h1 className="h-14 text-3xl font-bold md:text-4xl">
         r/{subreddit.name}
       </h1>
       <MiniCreatePost session={session} />

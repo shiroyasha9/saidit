@@ -86,7 +86,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
         </CardHeader>
         <CardContent>
           <div className="relative grid gap-1">
-            <div className="absolute top-0 left-0 w-8 h-10 grid place-items-center">
+            <div className="absolute left-0 top-0 grid h-10 w-8 place-items-center">
               <span className="text-sm text-zinc-400">u/</span>
             </div>
             <Label className="sr-only" htmlFor="name">

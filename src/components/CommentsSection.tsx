@@ -28,10 +28,10 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
   });
 
   return (
-    <div className="flex flex-col gap-y-4 mt-4">
-      <hr className="w-full h-px my-6" />
+    <div className="mt-4 flex flex-col gap-y-4">
+      <hr className="my-6 h-px w-full" />
       <CreateComment postId={postId} />
-      <div className="flex flex-col gap-y-6 mt-4">
+      <div className="mt-4 flex flex-col gap-y-6">
         {comments
           .filter((comment) => !comment.replyToId)
           .map((topLevelComment) => {
@@ -68,7 +68,7 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
                     return (
                       <div
                         key={reply.id}
-                        className="ml-2 py-2 pl-4 border-l-2 border-zinc-200"
+                        className="ml-2 border-l-2 border-zinc-200 py-2 pl-4"
                       >
                         <PostComment
                           comment={reply}

@@ -89,9 +89,9 @@ const PostComment = ({
           </p>
         </div>
       </div>
-      <p className="text-sm text-gray-900 mt-2">{comment.text}</p>
+      <p className="mt-2 text-sm text-gray-900">{comment.text}</p>
 
-      <div className="flex gap-2 items-center flex-wrap">
+      <div className="flex flex-wrap items-center gap-2">
         <CommentVotes
           commentId={comment.id}
           initialVotesAmount={votesAmount}
@@ -107,7 +107,7 @@ const PostComment = ({
             setIsReplying(true);
           }}
         >
-          <MessageSquare className="h-4 w-4 mr-1.5" />
+          <MessageSquare className="mr-1.5 h-4 w-4" />
           Reply
         </Button>
         {isReplying && (

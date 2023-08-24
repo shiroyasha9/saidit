@@ -50,7 +50,7 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <div>
-      <div className="flex h-full flex-col sm:flex-row items-center sm:items-start justify-between">
+      <div className="flex h-full flex-col items-center justify-between sm:flex-row sm:items-start">
         <Suspense fallback={<PostVoteShell />}>
           {/* @ts-expect-error server component */}
           <PostVoteServer
@@ -67,12 +67,12 @@ const Page = async ({ params }: PageProps) => {
             }}
           />
         </Suspense>
-        <div className="sm:w-0 w-full flex-1 bg-white p-4 rounded-sm">
-          <p className="max-h-40 mt-1 truncate text-xs text-gray-500">
+        <div className="w-full flex-1 rounded-sm bg-white p-4 sm:w-0">
+          <p className="mt-1 max-h-40 truncate text-xs text-gray-500">
             Posted by u/{post?.author.username ?? cachedPost.authorUsername}{" "}
             {formatTimeToNow(new Date(post?.createdAt ?? cachedPost.createdAt))}
           </p>
-          <h1 className="text-xl font-semibold py-2 leading-6 text-gray-900">
+          <h1 className="py-2 text-xl font-semibold leading-6 text-gray-900">
             {post?.title ?? cachedPost.title}
           </h1>
           <EditorOutput content={post?.content ?? cachedPost.content} />
@@ -93,11 +93,11 @@ const Page = async ({ params }: PageProps) => {
 
 const PostVoteShell = () => {
   return (
-    <div className="flex items-center flex-col pr-6 w-20">
+    <div className="flex w-20 flex-col items-center pr-6">
       <div className={buttonVariants({ variant: "ghost" })}>
         <ArrowBigUp className="h-5 w-5 text-zinc-700" />
       </div>
-      <div className="text-center py-2 font-medium text-sm text-zinc-900">
+      <div className="py-2 text-center text-sm font-medium text-zinc-900">
         <Loader2 className="h-3 w-3 animate-spin" />
       </div>
       <div className={buttonVariants({ variant: "ghost" })}>

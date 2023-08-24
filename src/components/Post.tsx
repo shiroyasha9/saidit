@@ -28,19 +28,19 @@ const Post = ({
   const postRef = useRef<HTMLDivElement>(null);
   return (
     <div className="rounded-md bg-white shadow">
-      <div className="px-6 py-4 flex justify-between">
+      <div className="flex justify-between px-6 py-4">
         <PostVoteClient
           initialVotesAmount={votesAmount}
           postId={post.id}
           initialVote={currentVote?.type}
         />
         <div className="w-0 flex-1">
-          <div className="max-h-40 mt-1 text-xs text-gray-500">
+          <div className="mt-1 max-h-40 text-xs text-gray-500">
             {subredditName ? (
               <>
                 <a
                   href={`/r/${subredditName}`}
-                  className="underline text-zinc-900 text-sm underline-offset-2"
+                  className="text-sm text-zinc-900 underline underline-offset-2"
                 >
                   r/{subredditName}
                 </a>
@@ -51,12 +51,12 @@ const Post = ({
             {formatTimeToNow(new Date(post.createdAt))}
           </div>
           <a href={`/r/${subredditName}/post/${post.id}`}>
-            <h1 className="text-lg font-semibold py-2 leading-6 text-gray-900">
+            <h1 className="py-2 text-lg font-semibold leading-6 text-gray-900">
               {post.title}
             </h1>
           </a>
           <div
-            className="relative text-sm max-h-40 w-full overflow-clip"
+            className="relative max-h-40 w-full overflow-clip text-sm"
             ref={postRef}
           >
             <EditorOutput content={post.content} />
@@ -66,9 +66,9 @@ const Post = ({
           </div>
         </div>
       </div>
-      <div className="bg-gray-50 z-20 text-sm p-4 sm:px-6">
+      <div className="z-20 bg-gray-50 p-4 text-sm sm:px-6">
         <a
-          className="w-fit flex items-center gap-2"
+          className="flex w-fit items-center gap-2"
           href={`/r/${subredditName}/${post.id}`}
         >
           <MessageSquare className="h-4 w-4" /> {commentAmount} comments

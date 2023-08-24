@@ -169,7 +169,7 @@ const Editor = ({ subredditId }: EditorProps) => {
   const { ref: titleRef, ...titleProps } = register("title");
 
   return (
-    <div className="w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200">
+    <div className="w-full rounded-lg border border-zinc-200 bg-zinc-50 p-4">
       <form
         id="subreddit-post-form"
         className="w-fit"

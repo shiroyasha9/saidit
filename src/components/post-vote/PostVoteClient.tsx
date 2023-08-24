@@ -79,7 +79,7 @@ const PostVoteClient = ({
   }, [initialVote]);
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
+    <div className="flex flex-col gap-4 pb-4 pr-6 sm:w-20 sm:gap-0 sm:pb-0">
       <Button
         onClick={() => vote("UP")}
         size="sm"
@@ -88,11 +88,11 @@ const PostVoteClient = ({
       >
         <ArrowBigUp
           className={cn("h-5 w-5 text-zinc-700", {
-            "text-emerald-500 fill-emerald-500": currentVote === "UP",
+            "fill-emerald-500 text-emerald-500": currentVote === "UP",
           })}
         />
       </Button>
-      <p className="text-center py-2 font-medium text-sm text-zinc-900">
+      <p className="py-2 text-center text-sm font-medium text-zinc-900">
         {votesAmount}
       </p>
       <Button
@@ -103,7 +103,7 @@ const PostVoteClient = ({
       >
         <ArrowBigDown
           className={cn("h-5 w-5 text-zinc-700", {
-            "text-red-500 fill-red-500": currentVote === "DOWN",
+            "fill-red-500 text-red-500": currentVote === "DOWN",
           })}
         />
       </Button>

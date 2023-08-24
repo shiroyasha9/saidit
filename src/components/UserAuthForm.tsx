@@ -9,7 +9,7 @@ import { Button } from "./ui/Button";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-const UserAuthForm: FC<UserAuthFormProps> = props => {
+const UserAuthForm: FC<UserAuthFormProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -34,12 +34,12 @@ const UserAuthForm: FC<UserAuthFormProps> = props => {
   return (
     <div {...rest} className={cn("flex justify-center", className)}>
       <Button
-        size='sm'
-        className='w-full'
+        size="sm"
+        className="w-full"
         onClick={loginWithGoogle}
         isLoading={isLoading}
       >
-        {isLoading ? null : <Icons.google className='w-4 h-4 mr-2' />}
+        {isLoading ? null : <Icons.google className="mr-2 h-4 w-4" />}
         Google
       </Button>
     </div>

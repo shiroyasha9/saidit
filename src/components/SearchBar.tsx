@@ -60,7 +60,7 @@ const SearchBar = () => {
   return (
     <Command
       ref={commandRef}
-      className="relative rounded-lg border max-w-lg z-50 overflow-visible"
+      className="relative z-50 max-w-lg overflow-visible rounded-lg border"
     >
       <CommandInput
         value={input}
@@ -69,11 +69,11 @@ const SearchBar = () => {
           debounceRequest();
         }}
         placeholder="Search commmunities..."
-        className="outline-none border-none focus:border-none focus:outline-none ring-0"
+        className="border-none outline-none ring-0 focus:border-none focus:outline-none"
       />
 
       {input.length > 0 && (
-        <CommandList className="absolute bg-white top-full inset-x-0 shadow rounded-b-md">
+        <CommandList className="absolute inset-x-0 top-full rounded-b-md bg-white shadow">
           {isFetched && queryResults?.length === 0 && (
             <CommandEmpty>No results found.</CommandEmpty>
           )}
@@ -89,7 +89,7 @@ const SearchBar = () => {
                     }}
                     value={subreddit.name}
                   >
-                    <Users className="w-4 h-4 mr-2" />
+                    <Users className="mr-2 h-4 w-4" />
                     <a href={`/r/${subreddit.name}`}>r/{subreddit.name}</a>
                   </CommandItem>
                 );
