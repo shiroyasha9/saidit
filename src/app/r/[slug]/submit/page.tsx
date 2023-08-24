@@ -1,8 +1,7 @@
-import Editor from "@/components/Editor";
+import { Editor } from "@/components/Editor";
 import { Button } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
-import React from "react";
 
 type PageProps = {
   params: {

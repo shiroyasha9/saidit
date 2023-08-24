@@ -1,21 +1,25 @@
 "use client";
-import TextareaAutosize from "react-textarea-autosize";
-import { useForm } from "react-hook-form";
+
 import { PostCreationRequest, postValidator } from "@/lib/validators/post";
+import type EditorJS from "@editorjs/editorjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type EditorJS from "@editorjs/editorjs";
-import { uploadFiles } from "@/lib/uploadthing";
+import { useForm } from "react-hook-form";
+import TextareaAutosize from "react-textarea-autosize";
+
 import { toast } from "@/hooks/use-toast";
+import { uploadFiles } from "@/lib/uploadthing";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
+
+import "@/styles/editor.css";
 
 type EditorProps = {
   subredditId: string;
 };
 
-const Editor = ({ subredditId }: EditorProps) => {
+export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
   const pathname = usePathname();
   const router = useRouter();
   const {
@@ -133,20 +137,21 @@ const Editor = ({ subredditId }: EditorProps) => {
       return data;
     },
     onError: () => {
-      toast({
-        title: "Something went wrong",
-        description: "Something went wrong while creating your post.",
+      return toast({
+        title: "Something went wrong.",
+        description: "Your post was not published. Please try again.",
         variant: "destructive",
       });
     },
     onSuccess: () => {
-      const newPathname = pathname.replace("/submit", "");
+      // turn pathname /r/mycommunity/submit into /r/mycommunity
+      const newPathname = pathname.split("/").slice(0, -1).join("/");
       router.push(newPathname);
 
       router.refresh();
 
       return toast({
-        description: "Your post has been created.",
+        description: "Your post has been published.",
       });
     },
   });
@@ -158,8 +163,6 @@ const Editor = ({ subredditId }: EditorProps) => {
       content: blocks,
       subredditId,
     };
-
-    console.log(payload);
 
     createPost(payload);
   }
@@ -187,10 +190,15 @@ const Editor = ({ subredditId }: EditorProps) => {
             className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
           />
           <div id="editor" className="min-h-[500px]" />
+          <p className="text-sm text-gray-500">
+            Use{" "}
+            <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
+              Tab
+            </kbd>{" "}
+            to open the command menu.
+          </p>
         </div>
       </form>
     </div>
   );
 };
-
-export default Editor;
